@@ -1,0 +1,25 @@
+## Build and Test Artifacts
+bin/
+obj/
+TestResults/
+
+## Visual Studio & Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Application & Database Files (Never commit runtime DBs)
+*.db
+*.db-shm
+*.db-wal
+App_Data/*.db
+App_Data/*.db-shm
+App_Data/*.db-wal
+
+## Logs & Temp files
+*.log
+.DS_Store
+Thumbs.db

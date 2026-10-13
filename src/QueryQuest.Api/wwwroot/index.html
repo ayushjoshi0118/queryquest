@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueryQuest - Learn SQL by Solving Real Challenges</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='65' font-size='50' font-family='monospace' font-weight='bold' fill='white' text-anchor='middle'>Q</text></svg>">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <a href="#" class="nav-brand" id="brand-link">
+      <div class="brand-icon">Q</div>
+      <div class="brand-text">Query<span>Quest</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><button class="nav-btn active" data-view="dashboard">Dashboard</button></li>
+      <li><button class="nav-btn" data-view="learn">Learn</button></li>
+      <li><button class="nav-btn" data-view="playground">Playground</button></li>
+      <li><button class="nav-btn" data-view="progress">Progress</button></li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="progress-pill">
+        <span id="nav-progress-text">0 / 24</span>
+        <div class="progress-pill-bar">
+          <div class="progress-pill-fill" id="nav-progress-fill"></div>
+        </div>
+      </div>
+      <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+        <span id="theme-icon">☀️</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="main-content">
+    
+    <!-- 1. DASHBOARD VIEW -->
+    <section class="view-section active" id="view-dashboard">
+      <div class="dashboard-container">
+        <div class="dash-header">
+          <h1>Welcome to QueryQuest</h1>
+          <p>Master SQL by executing real queries against live database scenarios.</p>
+        </div>
+
+        <!-- Continue Learning Banner -->
+        <div class="continue-card" id="continue-banner">
+          <div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.25rem;">Up Next</div>
+            <h2 id="continue-title" style="font-size: 1.25rem; font-weight: 700;">Start with Category 1: SQL Basics</h2>
+            <p id="continue-desc" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Learn how to inspect datasets with SELECT *.</p>
+          </div>
+          <button class="btn-primary" id="btn-continue-learning">Continue Learning &rarr;</button>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Completed</span>
+            <span class="metric-value" id="dash-completed">0</span>
+            <span class="metric-sub" id="dash-completed-sub">0% of 24 challenges</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Accuracy</span>
+            <span class="metric-value" id="dash-accuracy">0%</span>
+            <span class="metric-sub" id="dash-accuracy-sub">0 submissions total</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Points Earned</span>
+            <span class="metric-value" id="dash-points">0</span>
+            <span class="metric-sub">Quest score</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Current Streak</span>
+            <span class="metric-value" id="dash-streak">0</span>
+            <span class="metric-sub">Active consecutive days</span>
+          </div>
+        </div>
+
+        <!-- Progress by Topic and Recent Activity -->
+        <div class="dash-row">
+          <div class="dash-panel">
+            <div class="dash-panel-title">
+              <span>SQL Curriculum Progression</span>
+              <span id="dash-total-badge" class="badge badge-beginner">24 Challenges</span>
+            </div>
+            <div class="category-list" id="dash-category-list">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <div class="dash-panel">
+            <div class="dash-panel-title">
+              <span>Recent Activity</span>
+            </div>
+            <div id="dash-recent-activity">
+              <!-- Dynamically Populated or Empty State -->
+              <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                <div>No submissions yet. Start practicing in the Learn tab!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. LEARN WORKSPACE VIEW -->
+    <section class="view-section" id="view-learn">
+      <div class="workspace-layout">
+        
+        <!-- Left Column: Challenge Directory -->
+        <aside class="ws-left">
+          <div class="ws-left-header">
+            <input type="text" class="search-input" id="search-challenges" placeholder="Search challenges...">
+            <div class="filter-row">
+              <select class="select-filter" id="filter-category">
+                <option value="ALL">All Categories</option>
+                <option value="SQL Basics">SQL Basics</option>
+                <option value="Filtering and Sorting">Filtering and Sorting</option>
+                <option value="Aggregation">Aggregation</option>
+                <option value="Joins">Joins</option>
+                <option value="Subqueries and Advanced Queries">Subqueries & CTEs</option>
+                <option value="Data Analysis">Data Analysis</option>
+              </select>
+              <select class="select-filter" id="filter-difficulty">
+                <option value="ALL">All Difficulties</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+          </div>
+
+          <ul class="challenge-list" id="challenge-list">
+            <!-- Dynamically Rendered Challenges -->
+          </ul>
+        </aside>
+
+        <!-- Center Column: Problem Statement & SQL Editor -->
+        <div class="ws-center">
+          <div class="ws-problem-header">
+            <div class="ws-title-row">
+              <h2 class="ws-title" id="ws-ch-title">Select a Challenge</h2>
+              <div id="ws-ch-badges">
+                <span class="badge badge-beginner" id="ws-difficulty-badge">Beginner</span>
+              </div>
+            </div>
+            <p class="ws-objective" id="ws-ch-objective"></p>
+            <div class="ws-problem-text" id="ws-ch-statement">Select a challenge from the left panel to begin your quest.</div>
+          </div>
+
+          <div class="ws-tab-strip">
+            <button class="tab-btn active" id="tab-btn-schema">Schema & Sample Data</button>
+          </div>
+
+          <div class="schema-viewer" id="schema-viewer">
+            <!-- Populated with required tables and columns -->
+          </div>
+
+          <div class="editor-area">
+            <textarea class="editor-textarea" id="sql-editor" spellcheck="false" placeholder="Write your SQL query here..."></textarea>
+          </div>
+
+          <div class="ws-toolbar">
+            <div class="toolbar-group">
+              <button class="btn-secondary" id="btn-reset-sql" title="Reset editor to starter SQL">Reset</button>
+              <button class="btn-secondary" id="btn-show-hint" title="Reveal hint">💡 Hint (<span id="hint-count-text">0/3</span>)</button>
+              <button class="btn-secondary" id="btn-show-solution" title="Show reference solution">Solution</button>
+            </div>
+            <div class="toolbar-group">
+              <button class="btn-secondary" id="btn-run-query">▶ Run Query</button>
+              <button class="btn-primary" id="btn-submit-solution">✓ Submit Answer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Results & Feedback -->
+        <div class="ws-right">
+          <div class="feedback-container" id="feedback-container" style="display: none;">
+            <div class="feedback-box" id="feedback-box">
+              <div id="feedback-message"></div>
+              <div id="feedback-explanation" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;"></div>
+            </div>
+          </div>
+
+          <div class="feedback-container" id="hint-display-container" style="display: none;">
+            <div class="hints-box">
+              <div class="hints-header" id="hint-header-title">💡 Progressive Hint</div>
+              <div id="hint-body-text" style="font-size: 0.9rem;"></div>
+            </div>
+          </div>
+
+          <div class="results-section">
+            <div class="results-meta-bar">
+              <span id="results-count-text">0 rows returned</span>
+              <span id="results-time-text">0 ms</span>
+            </div>
+
+            <div class="table-responsive" id="query-table-container">
+              <div class="empty-state">
+                <div class="empty-state-icon">⚡</div>
+                <div>Run your query or submit an answer to view the result set.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. PLAYGROUND VIEW -->
+    <section class="view-section" id="view-playground">
+      <div class="workspace-layout" style="grid-template-columns: 280px 1fr 1fr;">
+        <!-- Left Column: All Database Tables -->
+        <aside class="ws-left">
+          <div class="ws-left-header">
+            <div style="font-weight: 700; font-size: 1rem;">Database Tables</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Inspect tables in the educational sandbox.</div>
+          </div>
+          <div style="overflow-y: auto; padding: 1rem;" id="playground-tables-list">
+            <!-- Dynamically populated tables list -->
+          </div>
+        </aside>
+
+        <!-- Center: Free-Form SQL Editor -->
+        <div class="ws-center">
+          <div class="ws-problem-header">
+            <h2 class="ws-title">SQL Sandbox Playground</h2>
+            <p class="ws-objective">Run any read-only SQL query against the sample dataset (JOINs, aggregates, CTEs, window functions).</p>
+          </div>
+          <div class="editor-area">
+            <textarea class="editor-textarea" id="playground-sql-editor" spellcheck="false" placeholder="SELECT * FROM employees LIMIT 10;"></textarea>
+          </div>
+          <div class="ws-toolbar">
+            <div class="toolbar-group">
+              <button class="btn-secondary" id="btn-playground-clear">Clear</button>
+            </div>
+            <div class="toolbar-group">
+              <button class="btn-primary" id="btn-playground-run">▶ Run Query</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Playground Query Results -->
+        <div class="ws-right">
+          <div class="results-section">
+            <div class="results-meta-bar">
+              <span id="playground-count-text">0 rows returned</span>
+              <span id="playground-time-text">0 ms</span>
+            </div>
+            <div class="table-responsive" id="playground-table-container">
+              <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <div>Run a query in the playground to explore data.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PROGRESS & ACHIEVEMENTS VIEW -->
+    <section class="view-section" id="view-progress">
+      <div class="dashboard-container">
+        <div class="dash-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <h1>Learning Progress & Achievements</h1>
+            <p>Your local learning accomplishments, completion statistics, and unlocked badges.</p>
+          </div>
+          <button class="btn-secondary" id="btn-open-reset-modal" style="color: var(--accent-danger); border-color: rgba(239, 68, 68, 0.4);">Reset Progress</button>
+        </div>
+
+        <!-- Milestone Badges Grid -->
+        <div style="margin-bottom: 2.5rem;">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Milestone Badges</h2>
+          <div class="badges-grid" id="badges-container">
+            <!-- Dynamically populated badges -->
+          </div>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="dash-panel" style="margin-bottom: 2rem;">
+          <div class="dash-panel-title">Mastery by Topic</div>
+          <div class="category-list" id="progress-category-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Activity History -->
+        <div class="dash-panel">
+          <div class="dash-panel-title">Submission Log</div>
+          <div id="progress-activity-table-container">
+            <!-- Activity Table -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Reset Confirmation Modal -->
+  <div class="modal-overlay" id="reset-modal">
+    <div class="modal-card">
+      <h3 class="modal-title">Reset All Progress?</h3>
+      <p class="modal-desc">This action will clear all completed challenge records, points, badges, and submission history from your local application database. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btn-cancel-reset">Cancel</button>
+        <button class="btn-primary" id="btn-confirm-reset" style="background-color: var(--accent-danger);">Yes, Reset Progress</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Solution Modal -->
+  <div class="modal-overlay" id="solution-modal">
+    <div class="modal-card" style="max-width: 600px;">
+      <h3 class="modal-title">Reference Solution</h3>
+      <pre style="background: var(--bg-input); padding: 1rem; border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.9rem; overflow-x: auto; color: #a7f3d0; margin-bottom: 1rem;" id="solution-sql-text"></pre>
+      <div id="solution-explanation-text" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btn-copy-solution">Copy to Editor</button>
+        <button class="btn-primary" id="btn-close-solution">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
